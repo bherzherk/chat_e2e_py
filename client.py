@@ -41,14 +41,21 @@ def run_client():
     # Window
     window = CTk()
     window.title("Chat")
+    window.resizable(width=False, height=False)
     set_appearance_mode("dark")
 
     text_chat = ScrolledText(window, state='disabled')
     text_chat.pack(padx=5, pady=5)
 
-    entry_chat = CTkEntry(window)
+    frame_entr_btn = CTkFrame(window)
+    frame_entr_btn.pack(padx=5, pady=5, fill=BOTH)
+
+    entry_chat = CTkEntry(frame_entr_btn)
     entry_chat.bind("<Return>", lambda _: send_message(client_socket, username, text_chat, entry_chat))
-    entry_chat.pack(padx=5, pady=5, fill=BOTH)
+    entry_chat.pack(side=LEFT, fill=BOTH, expand=1)
+
+    send_button = CTkButton(frame_entr_btn, text="Send", command=lambda : send_message(client_socket, username, text_chat, entry_chat))
+    send_button.pack(side=RIGHT, padx=5)
 
     thread = threading.Thread(target=receive_mesage, args=(client_socket, text_chat))
     thread.daemon = True
