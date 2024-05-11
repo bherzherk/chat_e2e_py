@@ -3,6 +3,7 @@ import socket
 import threading
 from customtkinter import *
 from tkinter.scrolledtext import ScrolledText
+from CTkMenuBar import *
 
 def send_message(client_socket, username, text_chat, entry_chat):
     message = entry_chat.get()
@@ -43,6 +44,14 @@ def run_client():
     window.title("Chat")
     window.resizable(width=False, height=False)
     set_appearance_mode("dark")
+
+    #menu
+    menu_bar = CTkMenuBar(window)
+    user_menu = menu_bar.add_cascade(username + " options")
+
+    dropdown = CustomDropdownMenu(widget=user_menu)
+    dropdown.add_option(option="Online users")
+    dropdown.add_option(option="Exit")
 
     text_chat = ScrolledText(window, state='disabled')
     text_chat.pack(padx=5, pady=5)
