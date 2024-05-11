@@ -4,6 +4,15 @@ import threading
 from customtkinter import *
 from tkinter.scrolledtext import ScrolledText
 
+def send_message(event, client_socket, username, text_chat, entry_chat):
+    message = entry_chat.get()
+    client_socket.sendall(f"{username} > {message}".encode())
+
+    entry_chat.delete(0, END)
+    text_chat.configure(state='normal')
+    text_chat.insert("end", f"{username} > {message}\n")
+    text_chat.configure(state='disabled')
+
 def run_client():
     host = 'localhost'
     port = 12345
@@ -24,7 +33,7 @@ def run_client():
     text_chat.pack(padx=5, pady=5)
 
     entry_chat = CTkEntry(window)
-#    entry_chat.bind("Return", lambda)
+    entry_chat.bind("<Return>", lambda event: send_message(event, client_socket, username, text_chat, entry_chat))
     entry_chat.pack(padx=5, pady=5, fill=BOTH)
 
     window.mainloop()
