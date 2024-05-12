@@ -1,6 +1,7 @@
 #!?usr/bin/env python3
 import socket
 import threading
+import ssl
 
 def p(trace):
     print(f"[+] {trace}")
@@ -43,6 +44,7 @@ def run_server():
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) # Wait time
     server_socket.bind(server_addr)
+    server_socket = ssl.wrap_socket(server_socket, keyfile="server-key.key", certfile="server-cert.pem", server_side=True)
     server_socket.listen()
 
     p("Server listening...")

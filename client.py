@@ -4,6 +4,7 @@ import threading
 from customtkinter import *
 from tkinter.scrolledtext import ScrolledText
 from CTkMenuBar import *
+import ssl
 
 def send_message(client_socket, username, text_chat, entry_chat):
     message = entry_chat.get()
@@ -43,6 +44,7 @@ def run_client():
     destination_addr = (host, port)
 
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket = ssl.wrap_socket(client_socket)
     client_socket.connect(destination_addr)
 
     username = input("\n[+] Enter username: ")
