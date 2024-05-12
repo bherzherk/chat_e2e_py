@@ -22,10 +22,18 @@ def client_thread(client_socket, clients, usernames):
             if not message:
                 break
 
+            if message == "!users":
+                client_socket.sendall(f"\n[+] Users connected: {', '.join(usernames.values())}\n".encode())
+                continue
+
             for client in clients:
                 client.sendall(f"{message}\n".encode())
         except:
             break
+
+    client_socket.close()
+    clients.remove(client_socket)
+    del usernames[client_socket]
 
 def run_server():
     host = 'localhost'

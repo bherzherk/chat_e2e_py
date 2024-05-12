@@ -27,6 +27,15 @@ def receive_mesage(client_socket, text_chat):
         except:
             break
 
+def list_users_request(client_socket):
+    client_socket.sendall("!users".encode())
+
+def exit_request(client_socket, username, window):
+    client_socket.sendall(f"\n[+] The user {username} left.\n".encode())
+    client_socket.close()
+
+    window.quit()
+    window.destroy()
 
 def run_client():
     host = 'localhost'
@@ -50,8 +59,8 @@ def run_client():
     user_menu = menu_bar.add_cascade(username + " options")
 
     dropdown = CustomDropdownMenu(widget=user_menu)
-    dropdown.add_option(option="Online users")
-    dropdown.add_option(option="Exit")
+    dropdown.add_option(option="Online users", font=("Arial", 12), command= lambda : list_users_request(client_socket))
+    dropdown.add_option(option="Exit", font=("Arial", 12), command= lambda : exit_request(client_socket, username, window))
 
     text_chat = ScrolledText(window, state='disabled')
     text_chat.pack(padx=5, pady=5)
